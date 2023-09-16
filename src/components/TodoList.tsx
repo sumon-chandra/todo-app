@@ -121,7 +121,7 @@ const TodoList = () => {
                                              checked={todo.completed}
                                              onChange={() => handleComplete(todo.id)}
                                         />
-                                        <label htmlFor={`${todo.id}`} className={`text-lg pr-10 ${todo.completed && "line-through opacity-75"}`}>
+                                        <label htmlFor={`${todo.id}`} className={`text-lg pr-10 ${todo.completed && "opacity-50"}`}>
                                              {todo.title}
                                         </label>
                                         <div className="absolute right-3 flex gap-3">
