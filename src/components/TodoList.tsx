@@ -9,7 +9,7 @@ const TodoList = () => {
 
      async function fetchTodos() {
           setIsLoading(true);
-          const response = await axios("https://jsonplaceholder.typicode.com/todos?_limit=10");
+          const response = await axios("https://jsonplaceholder.typicode.com/todos");
           const data = await response.data;
           setTodos(data);
           setIsLoading(false);
@@ -24,7 +24,7 @@ const TodoList = () => {
                {isLoading ? (
                     <p className="text-4xl font-black text-gray-400">Loading......</p>
                ) : (
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-4 overflow-y-auto max-h-[70vh]">
                          {todos.map(todo => (
                               <TodoCard todo={todo} key={todo.id} />
                          ))}
