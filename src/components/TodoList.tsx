@@ -3,7 +3,6 @@ import toast, { Toaster } from "react-hot-toast";
 
 import { Todo } from "../types";
 import axios from "axios";
-import TodoCard from "./TodoCard";
 
 const TodoList = () => {
      const [isLoading, setIsLoading] = useState(false);
@@ -41,11 +40,17 @@ const TodoList = () => {
      // ************ Fetch TODO Function ****************
      async function fetchTodos() {
           setIsLoading(true);
-          const response = await axios("https://jsonplaceholder.typicode.com/todos?_limit=7");
+          const response = await axios("https://jsonplaceholder.typicode.com/todos?_limit=6");
           const data = await response.data;
           setTodos(data);
           setIsLoading(false);
      }
+
+     // ************ Handle Complete Todo ****************
+     const handleComplete = (id: number) => {
+          const updatedTodo: Todo[] = todos.map(todo => (todo.id === id ? { ...todo, completed: !todo.completed } : todo));
+          setTodos(updatedTodo);
+     };
 
      //  ************ Focus on input field ****************
      useEffect(() => {
@@ -65,26 +70,40 @@ const TodoList = () => {
                     ) : (
                          <div className="flex flex-col gap-4 overflow-y-auto max-h-[70vh]">
                               {todos.map(todo => (
-                                   <TodoCard todo={todo} key={todo.id} />
+                                   <div key={todo.id} className="px-5 py-2 bg-white rounded-md shadow flex items-center gap-2 select-none">
+                                        <input
+                                             type="checkbox"
+                                             name="todoCheckbox"
+                                             id={`${todo.id}`}
+                                             className="cursor-pointer"
+                                             checked={todo.completed}
+                                             onChange={() => handleComplete(todo.id)}
+                                        />
+                                        <label htmlFor={`${todo.id}`} className={`text-lg ${todo.completed && "line-through opacity-75"}`}>
+                                             {todo.title}
+                                        </label>
+                                   </div>
                               ))}
                          </div>
                     )}
                </div>
 
                {/* ================= Input Form ============== */}
-               <form
-                    ref={formRef}
-                    onSubmit={addTodo}
-                    className="flex items-center justify-between px-4 py-2 mt-8 bg-white border-2 border-purple-300 rounded-full shadow-xl"
-               >
-                    <input ref={inpRef} type="text" name="todo" className="w-full px-3 py-2 bg-transparent focus:outline-none" />
-                    <input
-                         type="submit"
-                         disabled={addingTodo}
-                         value="Add"
-                         className="px-8 py-1 text-lg font-semibold text-white duration-300 bg-purple-700 shadow-md cursor-pointer rounded-3xl hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                    />
-               </form>
+               <footer className="absolute bottom-10 left-5 right-5">
+                    <form
+                         ref={formRef}
+                         onSubmit={addTodo}
+                         className="flex items-center justify-between px-4 py-2 mt-8 bg-white border-2 border-purple-300 rounded-full shadow-xl w-full"
+                    >
+                         <input ref={inpRef} type="text" name="todo" className="w-full px-3 py-2 bg-transparent focus:outline-none" />
+                         <input
+                              type="submit"
+                              disabled={addingTodo}
+                              value="Add"
+                              className="px-8 py-1 text-lg font-semibold text-white duration-300 bg-purple-700 shadow-md cursor-pointer rounded-3xl hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                         />
+                    </form>
+               </footer>
 
                {/* ============ Toaster =========== */}
                <Toaster />
