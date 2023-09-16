@@ -1,4 +1,3 @@
-import InputForm from "./components/InputForm";
 import TodoList from "./components/TodoList";
 
 function App() {
@@ -7,12 +6,7 @@ function App() {
                <header className="pt-8 text-3xl font-black text-center text-purple-700">
                     <h3>TODO LIST APP</h3>
                </header>
-               <section>
-                    <TodoList />
-               </section>
-               <footer className="pt-6">
-                    <InputForm />
-               </footer>
+               <TodoList />
           </main>
      );
 }
