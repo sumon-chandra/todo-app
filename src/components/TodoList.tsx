@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, SyntheticEvent } from "react";
 import toast, { Toaster } from "react-hot-toast";
-
 import { Todo } from "../types";
 import axios from "axios";
+import removeImg from "../assets/remove.png";
 
 const TodoList = () => {
      const [isLoading, setIsLoading] = useState(false);
@@ -52,6 +52,12 @@ const TodoList = () => {
           setTodos(updatedTodo);
      };
 
+     // ************ Handle Delete Todo ****************
+     const handleRemoveTodo = (id: number) => {
+          const updatedTodos = todos.filter(todo => todo.id !== id);
+          setTodos(updatedTodos);
+     };
+
      //  ************ Focus on input field ****************
      useEffect(() => {
           inpRef?.current?.focus();
@@ -70,7 +76,7 @@ const TodoList = () => {
                     ) : (
                          <div className="flex flex-col gap-4 overflow-y-auto max-h-[70vh]">
                               {todos.map(todo => (
-                                   <div key={todo.id} className="px-5 py-2 bg-white rounded-md shadow flex items-center gap-2 select-none">
+                                   <div key={todo.id} className="px-5 py-2 relative bg-white rounded-md shadow flex items-center gap-2 select-none">
                                         <input
                                              type="checkbox"
                                              name="todoCheckbox"
@@ -82,6 +88,11 @@ const TodoList = () => {
                                         <label htmlFor={`${todo.id}`} className={`text-lg ${todo.completed && "line-through opacity-75"}`}>
                                              {todo.title}
                                         </label>
+                                        <img
+                                             src={removeImg}
+                                             onClick={() => handleRemoveTodo(todo.id)}
+                                             className="w-6 absolute right-4 cursor-pointer"
+                                        />
                                    </div>
                               ))}
                          </div>
